@@ -1,4 +1,5 @@
 import React from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 
 import Header from './components/Header';
 import Home from './pages/Home';
@@ -14,6 +15,8 @@ export const SearchContext = React.createContext();
 function App() {
 
   const [searchValue, setSearchValue] = React.useState('');
+  const count = useSelector(state => state.counter.value);
+  const dispatch = useDispatch();
 
   return (
     <div className="App">
