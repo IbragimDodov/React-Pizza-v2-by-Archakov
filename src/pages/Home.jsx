@@ -1,5 +1,6 @@
 import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
+import axios from 'axios';
 
 
 import Categories from '../components/Categories';
@@ -31,15 +32,16 @@ function Home() {
     const category = categoryId > 0 ? `category=${categoryId}` : '';
     const search = searchValue ? `&search=${searchValue}` : '';
 
-    // fetch('https://62bb4e267bdbe01d529bb9bf.mockapi.io/items?category=' + categoryId)
-    fetch(`https://62bb4e267bdbe01d529bb9bf.mockapi.io/items?page=${currentPage}&limit=4&${category}&sortBy=${sortBy}&order=${order}${search}`)
-      .then(res => res.json() )
-      .then(arr => {
-        setItems(arr);
-        setIsLoading(false);
-      });
-      window.scrollTo(0, 0);
+    axios.get(`https://62bb4e267bdbe01d529bb9bf.mockapi.io/items?page=${currentPage}&limit=4&${category}&sortBy=${sortBy}&order=${order}${search}`)
+    .then(res => {
+      setItems(res.data);
+      setIsLoading(false);
+    })
+  
+    window.scrollTo(0, 0);
   }, [categoryId, sort.sortProperty, searchValue, currentPage])
+
+  
 
   // Фильтр поиска для статики
   // const pizzas = items.filter(obj => {

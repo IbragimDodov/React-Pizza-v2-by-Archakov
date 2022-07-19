@@ -13,7 +13,7 @@ const filterSlice = createSlice({
   initialState,
   reducers: {
     setCategoryId(state, action) {
-      state.categiryId = action.payload;
+      state.categoryId = action.payload;
     },
     setSort(state, action) {
       state.sort = action.payload;
