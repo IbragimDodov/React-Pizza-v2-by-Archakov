@@ -12,15 +12,16 @@ import Pagination from '../components/Pagination';
 import { SearchContext } from '../App';
 import { setCategoryId, setCurrentPage, setFilters } from '../Redux/slices/filterSlice';
 import { sortList } from '../components/Sort';
+import { setItems } from '../Redux/slices/pizzaSlice';
 
 function Home() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const isSearch = React.useRef(false);
   const isMounted = React.useRef(false);
+  const items = useSelector(state => state.pizza.items);
   const {categoryId, sort, currentPage} = useSelector(state => state.filter);
   const { searchValue } = React.useContext(SearchContext)
-  const [items, setItems] = React.useState([]);
   const [isLoading, setIsLoading] = React.useState(true);
   const onChangeCategory = (id) => {
     dispatch(setCategoryId(id));
@@ -30,7 +31,7 @@ function Home() {
     dispatch(setCurrentPage(number));
   }
 
-  const fetchPizzas = () => {
+  const fetchPizzas = async () => {
     setIsLoading(true);
 
     const sortBy = sort.sortProperty.replace('-', '');
@@ -38,11 +39,16 @@ function Home() {
     const category = categoryId > 0 ? `category=${categoryId}` : '';
     const search = searchValue ? `&search=${searchValue}` : '';
 
-    axios.get(`https://62bb4e267bdbe01d529bb9bf.mockapi.io/items?page=${currentPage}&limit=4&${category}&sortBy=${sortBy}&order=${order}${search}`)
-    .then(res => {
-      setItems(res.data);
+    try {
+      const {data} = await axios.get(`https://62bb4e267bdbe01d529bb9bf.mockapi.io/items?page=${currentPage}&limit=4&${category}&sortBy=${sortBy}&order=${order}${search}`);
+      dispatch(setItems(data));
+    } catch (error) {
+      alert('Error, we can`t find any pizza');
+    } finally {
       setIsLoading(false);
-    })
+    }
+
+    window.scrollTo(0, 0);
   }
 
   React.useEffect(() => {
@@ -74,7 +80,6 @@ function Home() {
   }, [])
 
   React.useEffect(() => {
-    window.scrollTo(0, 0);
 
     if (!isSearch.current) {
       fetchPizzas();
