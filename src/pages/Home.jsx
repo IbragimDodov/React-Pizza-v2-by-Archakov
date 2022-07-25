@@ -1,7 +1,7 @@
 import React from 'react';
 import qs from 'qs';
+
 import { useSelector, useDispatch } from 'react-redux';
-import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 
 import Categories from '../components/Categories';
@@ -9,19 +9,20 @@ import Sort from '../components/Sort';
 import PizzaBlock from '../components/PizzaBlock';
 import Skeleton from '../components/PizzaBlock/Skeleton';
 import Pagination from '../components/Pagination';
-import { SearchContext } from '../App';
-import { setCategoryId, setCurrentPage, setFilters } from '../Redux/slices/filterSlice';
 import { sortList } from '../components/Sort';
-import { fetchPizzas } from '../Redux/slices/pizzaSlice';
+
+import { selectFilter, setCategoryId, setCurrentPage, setFilters } from '../Redux/slices/filterSlice';
+
+import { fetchPizzas, selectPizzaData } from '../Redux/slices/pizzaSlice';
 
 function Home() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   // const isSearch = React.useRef(false);
   const isMounted = React.useRef(false);
-  const {items, status} = useSelector(state => state.pizza);
-  const {categoryId, sort, currentPage} = useSelector(state => state.filter);
-  const { searchValue } = React.useContext(SearchContext);
+
+  const {items, status} = useSelector(selectPizzaData);
+  const {categoryId, sort, currentPage, searchValue} = useSelector(selectFilter);
   const onChangeCategory = (id) => {
     dispatch(setCategoryId(id));
   }
@@ -95,7 +96,7 @@ function Home() {
             <h2>An error has occurred <icon>😕</icon></h2>
           </div>
         ) : (
-          <div className="content__items"> {status === 'loading' ? skeletons : pizzas}</div>
+          <div className="content__items"> {status == 'loading' ? skeletons : pizzas}</div>
         )
       }
       <Pagination currentPage={currentPage} onChangePage={onChangePage}/>
