@@ -3,8 +3,12 @@ import axios from 'axios';
 import { useParams, useNavigate } from 'react-router-dom'
 
 
-function FullPizza() {
-  const [pizza, setPizza] = React.useState();
+const FullPizza: React.FC = () => {
+  const [pizza, setPizza] = React.useState<{
+    imageUrl: string,
+    title: string,
+    price: number,
+  }>();
   const {id} = useParams();
   const navigate = useNavigate();
 
@@ -23,7 +27,7 @@ function FullPizza() {
   }, []);
 
   if (!pizza) {
-    return 'loading...'
+    return <>loading...</>
   }
 
   return (

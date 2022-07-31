@@ -7,7 +7,6 @@ import NotFound from './pages/NotFound';
 import Cart from './pages/Cart';
 import FullPizza from './components/FullPizza';
 
-
 import './scss/app.scss'
 import MainLayout from './layouts/MainLayout';
 
