@@ -15,7 +15,7 @@ import { selectFilter, setCategoryId, setCurrentPage, setFilters } from '../Redu
 
 import { fetchPizzas, selectPizzaData } from '../Redux/slices/pizzaSlice';
 
-function Home() {
+const Home: React.FC = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   // const isSearch = React.useRef(false);
@@ -23,12 +23,12 @@ function Home() {
 
   const {items, status} = useSelector(selectPizzaData);
   const {categoryId, sort, currentPage, searchValue} = useSelector(selectFilter);
-  const onChangeCategory = (id) => {
+  const onChangeCategory = (id: number) => {
     dispatch(setCategoryId(id));
   }
 
-  const onChangePage = number => {
-    dispatch(setCurrentPage(number));
+  const onChangePage = (page: number) => {
+    dispatch(setCurrentPage(page));
   }
 
   const getPizzas = async () => {
@@ -38,12 +38,14 @@ function Home() {
     const category = categoryId > 0 ? `category=${categoryId}` : '';
     const search = searchValue ? `&search=${searchValue}` : '';
 
-    dispatch(fetchPizzas({
-      sortBy,
-      order,
-      category,
-      search,
-      currentPage
+    dispatch(
+      // @ts-ignore
+      fetchPizzas({
+        sortBy,
+        order,
+        category,
+        search,
+        currentPage
     }));
 
     window.scrollTo(0, 0);
@@ -80,7 +82,7 @@ function Home() {
       getPizzas();
   }, [categoryId, sort.sortProperty, searchValue, currentPage])
 
-  const pizzas = items.map((obj) => <Link key={obj.id} to={`/pizzas/${obj.id}`} ><PizzaBlock {...obj} /></Link>);
+  const pizzas = items.map((obj: any) => <Link key={obj.id} to={`/pizzas/${obj.id}`} ><PizzaBlock {...obj} /></Link>);
   const skeletons = [...new Array(6)].map((_, index) => <Skeleton key={index} />);
 
   return (
@@ -93,7 +95,7 @@ function Home() {
       {
         status === 'error' ? (
           <div>
-            <h2>An error has occurred <icon>😕</icon></h2>
+            <h2>An error has occurred <span>😕</span></h2>
           </div>
         ) : (
           <div className="content__items"> {status === 'loading' ? skeletons : pizzas}</div>

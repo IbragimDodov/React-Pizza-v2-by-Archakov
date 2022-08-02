@@ -1,6 +1,6 @@
 import React from 'react'
 
-function NotFoundBlock() {
+const NotFoundBlock: React.FC = () => {
   return (
     <h1>
       Sorry! I can`t found something
