@@ -1,6 +1,7 @@
 {
   "name": "react-pizza-v2",
   "version": "0.1.0",
+  "homepage": "https://ibragimdodov.github.io/React-Pizza-v2-by-Archakov/",
   "private": true,
   "dependencies": {
     "@reduxjs/toolkit": "^1.8.3",
