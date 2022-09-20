@@ -14,7 +14,7 @@ if (rootElem) {
   const root = ReactDOM.createRoot(rootElem);
 
   root.render(
-    <BrowserRouter>
+    <BrowserRouter basename='/React-Pizza-v2-by-Archakov/'>
       <Provider store={store}>
         <App />
       </Provider>
